@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+<style>
+
+.carousel-inner > .item > img,
+.carousel-inner > .item > a > img {
+  min-height: 500px;    /* Set slide height here */
+
+}
+.circular--square {
+  border-radius: 60%;
+}
+.carousel .item {
+    height: 200px;
+  }
+  hr { 
+      position: relative; 
+      top: 20px; 
+      border: none; 
+      height: 12px; 
+      background: black; 
+      margin-bottom: 50px;
+      }
+</style>  
+</head>
+  <body>
+    
+    <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel" style="height:100%;">
+    <ol class="carousel-indicators">
+      <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
+      <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
+      <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
+    </ol>
+    <div class="carousel-inner" >
+      <div class="carousel-item active">
+        <img class="d-block w-100" id="img1" src="https://images.financialexpress.com/2020/01/2-76.jpg?w=1200&h=800&imflag=true" style='width:30px;' alt="First slide">
+      </div>
+      <div class="carousel-item">
+        <img class="d-block w-100" src="https://gpcdn.ams3.cdn.digitaloceanspaces.com/promotions/flipkart-bbd-sale-2020.jpg" alt="Second slide">
+      </div>
+      <div class="carousel-item">
+        <img class="d-block w-100" src="https://storiesflistgv2.blob.core.windows.net/stories/2017/09/bbdschedule_mainbanner2-59bfb1e3e37b8.jpg" alt="Third slide">
+      </div>
+    </div>
+    <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+      <span class="sr-only">Previous</span>
+    </a>
+    <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+      <span class="carousel-control-next-icon" aria-hidden="true"></span>
+      <span class="sr-only">Next</span>
+    </a>
+  </div>
+<h3 class="text-center" >Daily Deals</h3><hr>
+<mat-progress-bar color="accent" mode="indeterminate" *ngIf="spinnerService.visibility | async"></mat-progress-bar>
+<!-- We are going to get an array of deals stored in the publicDeals variable. We'll loop over that variable here using the ngFor directive -->
+<h3 *ngIf='loading'><center><img src="https://wpamelia.com/wp-content/uploads/2018/11/ezgif-2-6d0b072c3d3f.gif" id="img1" alt="this slowpoke moves"  width="250" alt="404 image"/></center></h3>
+<div class="col-sm-4" *ngFor="let deal of publicDeals" width="100%">
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <a [routerLink]="['/dealsdetails',deal.id]" routerLinkActive="active"> <img [src]="deal.image" class="img-thumbnail" *ngIf="!isImageLoading;">
+      </a>
+      <h3 class="panel-title">{{ deal.name }}</h3>
+    </div>
+    <div class="panel-body">
+      {{ deal.description }}
+    </div>
+    <div class="panel-footer">
+      <ul class="list-inline">
+        <li><font style='color:red;'>Original</font></li>
+        <li class="pull-right"><font style='color:red;'>Sale</font></li>
+      </ul>
+      <ul class="list-inline">
+        <li><a class="btn btn-danger">${{ deal.originalPrice | number }}</a></li>
+        <li class="pull-right"><a class="btn btn-success" (click)="dealService.purchase(deal)"><font style='color:white'>${{ deal.salePrice | number }}</font></a></li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- We are going to use the authService.isLoggedIn method to see if the user is logged in or not. If they are not logged in we'll encourage them to log in, otherwise, if they are authenticated, we'll provide a handy link to private deals. We haven't implemented the authService yet, so don't worry about the functionality just yet -->
+<div class="col-sm-12" >
+  <div class="jumbotron text-center">
+    <h2>Get More Deals By Logging In</h2>
+  </div>
+</div>
+<div class="col-sm-12" >
+  <div class="jumbotron text-center">
+    <h2>View Private Deals</h2>
+    <a class="btn btn-lg btn-success" routerLink="/special">Private Deals</a>
+  </div>
+</div>
+<!-- If an error occurs, we'll show an error message -->
+<div class="col-sm-12 alert alert-danger" *ngIf="error">
+  <strong>Oops!</strong> An error occurred fetching data. Please try again.
+</div>
+</body>
+</html>
